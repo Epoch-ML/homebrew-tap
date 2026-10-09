@@ -1,0 +1,32 @@
+name: Verify ZTC formula
+on:
+  pull_request:
+    paths: ["Formula/ztc.rb", ".github/workflows/formula.yml"]
+  push:
+    branches: [main]
+    paths: ["Formula/ztc.rb"]
+permissions:
+  contents: read
+jobs:
+  formula:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Check whether a real release formula is present
+        id: release
+        run: |
+          if test -f Formula/ztc.rb; then echo 'ready=true' >> "$GITHUB_OUTPUT"; fi
+      - name: Verify install, signature and bundled CLI
+        if: steps.release.outputs.ready == 'true'
+        run: |
+          set -euo pipefail
+          test "$(uname -m)" = arm64
+          brew style Formula/ztc.rb
+          brew install --build-from-source Formula/ztc.rb
+          brew test ztc
+          app="$(brew --prefix ztc)/libexec/ztc.app"
+          codesign --verify --deep --strict "$app"
+          spctl --assess --type execute --verbose=2 "$app"
+          env -i HOME="$HOME" PATH=/usr/bin:/bin:/usr/sbin:/sbin "$(brew --prefix ztc)/bin/ztc" --version
