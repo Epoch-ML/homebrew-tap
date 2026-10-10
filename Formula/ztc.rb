@@ -10,7 +10,7 @@ class Ztc < Formula
   def install
     app = buildpath/"ztc.app"
     app = buildpath unless app.directory?
-    (libexec/"ztc.app").install app.children
+    (libexec/"ztc.app").install app/"Contents"
     (bin/"ztc").write <<~SH
       #!/bin/sh
       exec '#{libexec}/ztc.app/Contents/MacOS/ZTerm' --ztc-cli "$@"
