@@ -24,9 +24,10 @@ jobs:
           set -euo pipefail
           test "$(uname -m)" = arm64
           brew style Formula/ztc.rb
-          brew install --build-from-source Formula/ztc.rb
-          brew test ztc
-          app="$(brew --prefix ztc)/libexec/ztc.app"
+          brew tap epoch-ml/ztc-verification "file://$GITHUB_WORKSPACE"
+          brew install --build-from-source --skip-link epoch-ml/ztc-verification/ztc
+          brew test --force epoch-ml/ztc-verification/ztc
+          app="$(brew --prefix epoch-ml/ztc-verification/ztc)/libexec/ztc.app"
           codesign --verify --deep --strict "$app"
           spctl --assess --type execute --verbose=2 "$app"
-          env -i HOME="$HOME" PATH=/usr/bin:/bin:/usr/sbin:/sbin "$(brew --prefix ztc)/bin/ztc" --version
+          env -i HOME="$HOME" PATH=/usr/bin:/bin:/usr/sbin:/sbin "$(brew --prefix epoch-ml/ztc-verification/ztc)/bin/ztc" --version
