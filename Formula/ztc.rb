@@ -1,9 +1,9 @@
 class Ztc < Formula
   desc "Coding agent with its self-contained desktop runtime"
   homepage "https://zergai.com/ztc"
-  url "https://github.com/Epoch-ML/ztc-releases/releases/download/ztc-desktop-preview-v0.8.0-beta.1/ztc.app.tar.gz"
-  version "0.8.0-beta.1"
-  sha256 "4e5bbcdcb1ee20cb8ba8f81795263956469f7e01ae8afd57091dc22baf3bb42c"
+  url "https://github.com/Epoch-ML/ztc-releases/releases/download/ztc-desktop-preview-v0.9.0-beta.1/ztc.app.tar.gz"
+  version "0.9.0-beta.1"
+  sha256 "1c933b68cec479fa842c7e815afc32ffe60e12daf4d07b750206e1ddfb2737bf"
   depends_on arch: :arm64
   depends_on :macos
 
